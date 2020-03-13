@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('weather', function () {
+    return view('weather');
+});
+
+Route::get('weather', 'WeatherController@getCity' );
+
+Route::get('orders', 'OrderController@getAll' );
