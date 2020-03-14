@@ -1,95 +1,13 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+          @extends('layouts.app')
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+          @section('main')
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+          @if (isset($orders))
 
-            .full-height {
-                height: 100vh;
-            }
+          @section('title', 'Заказы')
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-top position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                         <a href="{{ url('/') }}">Home</a>
-                         <a href="weather">Прогноз погоды</a>
-                         <a href="orders">Заказы</a>
-                </div>
-            </div>
-
-            <table class="table">
+            <table class="table table-hover table-bordered">
               <thead>
                 <tr>
                   <th scope="col">id</th>
@@ -103,24 +21,90 @@
               <tbody>
               @foreach ($orders as $key=>$order)
                 <tr>
-                  <td scope="col">{{$key}}</td>
-                  <td scope="col">{{$order['name']}}</td>
+                  <th scope="col">{{$key}}</th>
+                  <th scope="col">{{$order['partner_name']}}</th>
                   <th scope="col">{{$order['summ']}}</th>
                   <th scope="col" align="left">
                   <ol>
                   @foreach ($order['composition'] as $item)
-                    <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}}*{{$item->price}}={{$item->quantity*$item->price}}</li>
+                    <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}} x {{$item->price}} = {{$item->quantity*$item->price}}</li>
                   @endforeach
                   </ol>
                   </th>
                   <th>{{$order['status']}}</th>
-                  <td><a href='{{$key}}?mod=edit' >Edit</a></td>
+                  <td><a href='http://flor/public/order/show?order_id={{$key}}' target="_blank" >Edit</a></td>
                 </tr>
               @endforeach
               </tbody>
             </table>
 
+        @elseif (isset($order))
+
+        @section('title', 'Редактирование заказа')
+
+        <h1>Редактируем заказ № {{key($order)}}</h1>
+
+        {{ Form::open(array('url' => 'order/show?order_id='.key($order), 'class' => ''))}}
+
+        <div class="col-sm-6 panel" >
+
+        <div class="form-group">
+        {{Form::label('email', 'E-mail', $attributes = array('class' => 'col-sm-2 col-form-label') )}}
+        {{Form::email('email', $order[key($order)]['email'], $attributes = array('class' => 'form-control','required' => 'required' ) )}}
         </div>
 
-    </body>
-</html>
+        <div class="form-group">
+        {{Form::label('partner', 'Партнёр', $attributes = array('class' => 'col-sm-2 col-form-label') )}}
+        {{Form::select('partner', $partners, $order[key($order)]['partner_id'], $attributes = array('class' => 'form-control' ) )}}
+        </div>
+
+        <h4>Состав заказа</h4>
+
+         <table class="table" >
+                       <thead>
+                         <tr>
+                           <th scope="col"></th>
+                           <th scope="col">продукт (вендор)</th>
+                           <th scope="col">цена*цена</th>
+                           <th scope="col">сумма</th>
+                         </tr>
+                       </thead>
+         <tbody>
+         @foreach ($order[key($order)]['composition'] as $item)
+            <tr align="left" >
+            <td>{{$loop->iteration}}</td>
+            <td  >{{$item->prod_name}} ({{$item->vnd_name}})</td>
+            <td> {{$item->quantity}} x {{$item->price}}</td>
+            <td>{{$item->quantity*$item->price}}</td>
+            </tr>
+         @endforeach
+         <tr align="left" >
+         <td></td>
+         <td></td>
+         <td>Общая стоимость заказа:</td>
+         <td>{{$order[key($order)]['summ']}}</td>
+         </tr>
+         </tbody>
+         </table>
+
+         <div class="form-group">
+         {{Form::label('status', 'Статус', $attributes = array('class' => 'col-sm-2 col-form-label') )}}
+         {{Form::select('status', array('0' => 'новый', '10' => 'подтвержден','20' => 'завершен'), $order[key($order)]['status'], $attributes = array('class' => 'form-control' ) )}}
+         </div>
+
+         <div class="form-group">
+         {{  Form::submit('Сохранить', $attributes = array('class' => 'btn btn-primary col-sm-2'))}}
+         </div>
+
+         </div>
+
+         {{  Form::close() }}
+        @elseif (isset($data))
+
+        @section('title', 'Тестирование')
+
+        <pre>{{print_r($data)}}</pre>
+        @else
+          Здесь нет записей!
+        @endif
+          @endsection

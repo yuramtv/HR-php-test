@@ -15,10 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('weather', function () {
-    return view('weather');
-});
-
 Route::get('weather', 'WeatherController@getCity' );
 
-Route::get('orders', 'OrderController@getAll' );
+Route::get('order/list', 'OrderController@getAll');
+
+Route::get('order/show', 'OrderController@show');
+Route::post('order/show', 'OrderController@show');
