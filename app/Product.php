@@ -3,19 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     static public function getAllProducts (){
 
-        $products = self::all();
+        $products = DB::table('products')
+            ->join('vendors', 'vendors.id', '=', 'products.vendor_id')
+            ->select('products.*', 'vendors.name as vnd_name')
+            ->paginate(25);
 
-        $out = Array();
-
-        foreach ($products as $product) {
-            $out[$product->id] = $product->name;
-        }
-
-        return $out;
+        return $products;
     }
 }
