@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 class WeatherController extends Controller
 {
 
-    public function getCity($lat = null ,$lon = null)
+    public function getCity($lat = '53.243562' ,$lon = '34.363407')
     {
         $opts = array(
             'http'=>array(
@@ -16,11 +16,12 @@ class WeatherController extends Controller
             ));
         $context = stream_context_create($opts);
 
-        $data = file_get_contents('https://api.weather.yandex.ru/v1/forecast?lat=53.243562&lon=34.363407', false, $context);
+        $data = file_get_contents('https://api.weather.yandex.ru/v1/forecast?lat='.$lat.'&lon='.$lon, false, $context);
 
         $out = json_decode($data);
 
         return view('weather', ['result' => $out->fact]);
     }
 
+    
 }
