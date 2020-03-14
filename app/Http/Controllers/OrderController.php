@@ -48,31 +48,4 @@ class OrderController extends Controller
         return view('orders', ['order' => $order,'partners' => $partners]);
     }
 
-    public function edit(Request $request){
-
-        $data = Array();
-
-        $order_id = $request->get('order_id');
-
-        $data['order_id'] = $order_id;
-        $data['email'] = $request->post('email');
-        $data['partner_id'] = $request->post('partner');
-        $data['status'] = $request->post('status');
-
-        $order = Order::find($order_id);
-
-        $order->client_email = $request->post('email');
-        $order->status = $request->post('status');
-
-        $order->save();
-
-        $order = Order::GetOrders ($order_id);
-
-        $partners = Partner::GetAllPartners();
-
-        //return view('orders', ['order' => $order,'partners' => $partners ]);
-        return view('orders', ['data' => $data]);
-
-    }
-
 }

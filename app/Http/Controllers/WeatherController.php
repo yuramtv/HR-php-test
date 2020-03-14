@@ -23,6 +23,6 @@ class WeatherController extends Controller
         return view('weather', ['result' => $out->fact]);
     }
 
-    
+
 
 }

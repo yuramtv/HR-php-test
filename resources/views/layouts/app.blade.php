@@ -43,6 +43,7 @@
                          <a href="{{ url('/') }}">Home</a>
                          <a href="{{ url('weather')}}">Прогноз погоды</a>
                          <a href="{{ url('order/list')}}">Заказы</a>
+                         <a href="{{ url('products')}}">Продукты</a>
                 </div>
 
 
