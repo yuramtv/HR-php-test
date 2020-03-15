@@ -135,10 +135,10 @@ class OrderController extends Controller
 
             $data = array("body" => $body);
 
-            //return view('orders', ['data' => $body]);  // альтернативный вывод сообщения на экран монитора
+            // return view('orders', ['data' => $body]);  // альтернативный вывод сообщения на экран монитора
 
             /*
-             * ### отправка почты (закомментировал, т.к. у ингя не настроено почтовое окружение)
+             * ### отправка почты (закомментировал, т.к. у меня не настроено почтовое окружение)
              *
 
             Mail::send('emails', $data, function ($message) use ($order, $vendor_email_list) {
