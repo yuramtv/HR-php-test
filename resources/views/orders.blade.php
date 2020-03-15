@@ -7,36 +7,171 @@
 
           @section('title', 'Заказы')
 
-            <table class="table table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">id</th>
-                  <th scope="col">partner</th>
-                  <th scope="col">summ</th>
-                  <th scope="col">наименование_состав_заказа</th>
-                  <th scope="col">статус</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-              @foreach ($orders as $key=>$order)
-                <tr>
-                  <th scope="col">{{$key}}</th>
-                  <th scope="col">{{$order['partner_name']}}</th>
-                  <th scope="col">{{$order['summ']}}</th>
-                  <th scope="col" align="left">
-                  <ol>
-                  @foreach ($order['composition'] as $item)
-                    <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}} x {{$item->price}} = {{$item->quantity*$item->price}}</li>
-                  @endforeach
-                  </ol>
-                  </th>
-                  <th>{{$order['status']}}</th>
-                  <td><a href='/order/show?order_id={{$key}}' target="_blank" >Edit</a></td>
-                </tr>
-              @endforeach
-              </tbody>
-            </table>
+          <ul class="nav nav-tabs col-sm-10">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#past_due">Просроченные</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#current">Текущие</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" data-toggle="tab" href="#new">Новые</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" data-toggle="tab" href="#completed">Выполненные</a>
+            </li>
+          </ul>
+
+          <!-- Блоки с контентом -->
+          <div class="tab-content  col-sm-10">
+            <!-- Просроченные -->
+            <div class="tab-pane fade in active" id="past_due">
+
+                        <table class="table table-hover table-bordered col-sm-8">
+                          <thead>
+                            <tr>
+                              <th scope="col">id</th>
+                              <th scope="col">partner</th>
+                              <th scope="col">summ</th>
+                              <th scope="col">наименование_состав_заказа</th>
+                              <th scope="col">дата доставки</th>
+                              <th scope="col">статус</th>
+                              <th scope="col"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          @foreach ($past_due as $key=>$order)
+                            <tr>
+                              <th scope="col">{{$key}}</th>
+                              <th scope="col">{{$order['partner_name']}}</th>
+                              <th scope="col">{{$order['summ']}}</th>
+                              <th scope="col" align="left">
+                              <ol>
+                              @foreach ($order['composition'] as $item)
+                                <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}} x {{$item->price}} = {{$item->quantity*$item->price}}</li>
+                              @endforeach
+                              </ol>
+                              </th>
+                              <th>{{$order['delivery_dt']}}</th>
+                              <th>{{$order['status']}}</th>
+                              <td><a href='/order/show?order_id={{$key}}' target="_blank" >Edit</a></td>
+                            </tr>
+                          @endforeach
+                          </tbody>
+                        </table>
+
+            </div>
+            <!-- Текущие -->
+            <div class="tab-pane fade in" id="current">
+
+                                    <table class="table table-hover table-bordered col-sm-8">
+                                      <thead>
+                                        <tr>
+                                          <th scope="col">id</th>
+                                          <th scope="col">partner</th>
+                                          <th scope="col">summ</th>
+                                          <th scope="col">наименование_состав_заказа</th>
+                                          <th scope="col">дата доставки</th>
+                                          <th scope="col">статус</th>
+                                          <th scope="col"></th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                      @foreach ($current as $key=>$order)
+                                        <tr>
+                                          <th scope="col">{{$key}}</th>
+                                          <th scope="col">{{$order['partner_name']}}</th>
+                                          <th scope="col">{{$order['summ']}}</th>
+                                          <th scope="col" align="left">
+                                          <ol>
+                                          @foreach ($order['composition'] as $item)
+                                            <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}} x {{$item->price}} = {{$item->quantity*$item->price}}</li>
+                                          @endforeach
+                                          </ol>
+                                          </th>
+                                          <th>{{$order['delivery_dt']}}</th>
+                                          <th>{{$order['status']}}</th>
+                                          <td><a href='/order/show?order_id={{$key}}' target="_blank" >Edit</a></td>
+                                        </tr>
+                                      @endforeach
+                                      </tbody>
+                                    </table>
+
+            </div>
+            <!-- Новые -->
+            <div class="tab-pane fade in" id="new">
+                                                <table class="table table-hover table-bordered col-sm-8">
+                                                  <thead>
+                                                    <tr>
+                                                      <th scope="col">id</th>
+                                                      <th scope="col">partner</th>
+                                                      <th scope="col">summ</th>
+                                                      <th scope="col">наименование_состав_заказа</th>
+                                                      <th scope="col">дата доставки</th>
+                                                      <th scope="col">статус</th>
+                                                      <th scope="col"></th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                  @foreach ($new as $key=>$order)
+                                                    <tr>
+                                                      <th scope="col">{{$key}}</th>
+                                                      <th scope="col">{{$order['partner_name']}}</th>
+                                                      <th scope="col">{{$order['summ']}}</th>
+                                                      <th scope="col" align="left">
+                                                      <ol>
+                                                      @foreach ($order['composition'] as $item)
+                                                        <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}} x {{$item->price}} = {{$item->quantity*$item->price}}</li>
+                                                      @endforeach
+                                                      </ol>
+                                                      </th>
+                                                      <th>{{$order['delivery_dt']}}</th>
+                                                      <th>{{$order['status']}}</th>
+                                                      <td><a href='/order/show?order_id={{$key}}' target="_blank" >Edit</a></td>
+                                                    </tr>
+                                                  @endforeach
+                                                  </tbody>
+                                                </table>
+            </div>
+            <!-- Выполненные -->
+            <div class="tab-pane fade in" id="completed">
+
+                                                            <table class="table table-hover table-bordered col-sm-8">
+                                                              <thead>
+                                                                <tr>
+                                                                  <th scope="col">id</th>
+                                                                  <th scope="col">partner</th>
+                                                                  <th scope="col">summ</th>
+                                                                  <th scope="col">наименование_состав_заказа</th>
+                                                                  <th scope="col">дата доставки</th>
+                                                                  <th scope="col">статус</th>
+                                                                  <th scope="col"></th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody>
+                                                              @foreach ($completed as $key=>$order)
+                                                                <tr>
+                                                                  <th scope="col">{{$key}}</th>
+                                                                  <th scope="col">{{$order['partner_name']}}</th>
+                                                                  <th scope="col">{{$order['summ']}}</th>
+                                                                  <th scope="col" align="left">
+                                                                  <ol>
+                                                                  @foreach ($order['composition'] as $item)
+                                                                    <li>{{$item->prod_name}} ({{$item->vnd_name}}) :: {{$item->quantity}} x {{$item->price}} = {{$item->quantity*$item->price}}</li>
+                                                                  @endforeach
+                                                                  </ol>
+                                                                  </th>
+                                                                  <th>{{$order['delivery_dt']}}</th>
+                                                                  <th>{{$order['status']}}</th>
+                                                                  <td><a href='/order/show?order_id={{$key}}' target="_blank" >Edit</a></td>
+                                                                </tr>
+                                                              @endforeach
+                                                              </tbody>
+                                                            </table>
+
+
+            </div>
+          </div>
 
         @elseif (isset($order))
 
@@ -103,7 +238,7 @@
 
         @section('title', 'Тестирование')
 
-        <pre>{{print_r($data)}}</pre>
+        <pre style="text-align: left;" >{{$data}}</pre>
         @else
           Здесь нет записей!
         @endif
