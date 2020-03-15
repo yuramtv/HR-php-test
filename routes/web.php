@@ -23,3 +23,4 @@ Route::get('order/show', 'OrderController@show');
 Route::post('order/show', 'OrderController@show');
 
 Route::get('products', 'ProductController@getAllProducts' );
+Route::post('products', 'ProductController@savePrice' );

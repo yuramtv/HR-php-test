@@ -14,6 +14,7 @@
         <!-- Scripts -->
 
         <script type="text/javascript" src="{{ URL::asset('/js/app.js') }}"></script> <!-- BootStrap -->
+        <script type="text/javascript" src="{{ URL::asset('/js/script.js') }}"></script> <!-- User -->
 
         <!-- Styles -->
 
