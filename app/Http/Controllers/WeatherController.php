@@ -13,6 +13,7 @@ class WeatherController extends Controller
     private $lat = '53.243562';
     private $lon = '34.363407';
 
+    
     public function getCity()
     {
         $opts = array(
